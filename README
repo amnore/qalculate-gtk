@@ -11,7 +11,7 @@ Qt, and CLI).
 
 1. Requirements
 
-* GTK (>= 3.10)
+* GTK (>= 3.12)
 * libqalculate (>= 5.1.0)
 
 2. Installation

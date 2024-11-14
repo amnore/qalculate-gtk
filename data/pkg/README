@@ -4,7 +4,7 @@
 
 Extract (tar -xJf) and run from anywhere. The binaries are statically compiled
 against libqalculate, icu, and mpfr, libcurl, openssl, readline, and termcap,
-but requires that GTK (>= 3.10) is installed.
+but requires that GTK (>= 3.12) is installed.
 
 qalc - CLI application
 qalculate - GUI application

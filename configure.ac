@@ -77,7 +77,7 @@ AC_SUBST(GLIB_LIBS)
 QALCULATE_GTK="qalculate-gtk${EXEEXT}"
 
 PKG_CHECK_MODULES(GTK, [
-	gtk+-3.0 >= 3.10
+	gtk+-3.0 >= 3.12
 	gdk-pixbuf-2.0
 	])
 AC_SUBST(GTK_CFLAGS)
