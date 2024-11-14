@@ -29,6 +29,7 @@
 		<file preprocess="xml-stripblanks">unknownedit.ui</file>
 		<file preprocess="xml-stripblanks">variableedit.ui</file>
 		<file preprocess="xml-stripblanks">variables.ui</file>
+		<file preprocess="xml-stripblanks">menus.ui</file>
 	</gresource>
 	<gresource prefix="/qalculate-gtk/icons">
 		<file alias="scalable/actions/rpn-swap-symbolic.svg">icons/scalable/rpn-swap-symbolic.svg</file>

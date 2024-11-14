@@ -219,6 +219,7 @@ enum {
 int title_type = TITLE_APP;
 
 GtkBuilder *main_builder = NULL;
+GtkBuilder *menu_builder = NULL;
 
 GtkWindow *mainwindow;
 
@@ -8409,6 +8410,9 @@ void create_main_window() {
 
 	main_builder = getBuilder("main.ui");
 	g_assert(main_builder != NULL);
+
+	menu_builder = getBuilder("menus.ui");
+	g_assert(menu_builder != NULL);
 
 	/* make sure we get a valid main window */
 	g_assert(gtk_builder_get_object(main_builder, "main_window") != NULL);

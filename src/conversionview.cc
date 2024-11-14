@@ -22,6 +22,7 @@
 
 #include <gdk/gdkkeysyms.h>
 #include <gdk/gdk.h>
+#include <gio/gio.h>
 #include <gtk/gtk.h>
 #include <cairo/cairo-gobject.h>
 
@@ -38,6 +39,7 @@ using std::vector;
 using std::endl;
 
 extern GtkBuilder *main_builder;
+extern GtkBuilder *menu_builder;
 
 GtkWidget *tUnitSelectorCategories;
 GtkWidget *tUnitSelector;
@@ -45,6 +47,7 @@ GtkListStore *tUnitSelector_store;
 GtkTreeModel *tUnitSelector_store_filter;
 GtkTreeStore *tUnitSelectorCategories_store;
 GtkTreeViewColumn *flag_column;
+GtkMenu *tUnitSelector_menu;
 
 string selected_unit_selector_category;
 bool block_unit_selector_convert = false;
@@ -289,10 +292,9 @@ void update_convert_popup() {
 	GtkTreeModel *model;
 	Unit *u_sel = popup_convert_unit;
 	if(!u_sel && gtk_tree_selection_get_selected(select, &model, &iter_sel)) gtk_tree_model_get(model, &iter_sel, 1, &u_sel, -1);
-	gtk_widget_set_sensitive(GTK_WIDGET(gtk_builder_get_object(main_builder, "popup_menu_convert_insert")), u_sel != NULL);
-	gtk_widget_set_sensitive(GTK_WIDGET(gtk_builder_get_object(main_builder, "popup_menu_convert_convert")), u_sel != NULL);
+	ACTIONS_SET_ENABLED(tUnitSelector, u_sel != NULL, "conversionview", "insert", "convert");
 }
-void on_popup_menu_convert_insert_activate(GtkMenuItem*, gpointer) {
+void on_popup_menu_convert_insert_activate(GSimpleAction*, GVariant*, gpointer) {
 	GtkTreeIter iter_sel;
 	GtkTreeSelection *select = gtk_tree_view_get_selection(GTK_TREE_VIEW(tUnitSelector));
 	GtkTreeModel *model;
@@ -300,7 +302,7 @@ void on_popup_menu_convert_insert_activate(GtkMenuItem*, gpointer) {
 	if(!u && gtk_tree_selection_get_selected(select, &model, &iter_sel)) gtk_tree_model_get(model, &iter_sel, 1, &u, -1);
 	insert_unit(u, true);
 }
-void on_popup_menu_convert_convert_activate(GtkMenuItem*, gpointer) {
+void on_popup_menu_convert_convert_activate(GSimpleAction*, GVariant*, gpointer) {
 	GtkTreeIter iter_sel;
 	GtkTreeSelection *select = gtk_tree_view_get_selection(GTK_TREE_VIEW(tUnitSelector));
 	GtkTreeModel *model;
@@ -353,9 +355,9 @@ gboolean on_convert_treeview_unit_button_press_event(GtkWidget *w, GdkEventButto
 
 		update_convert_popup();
 #if GTK_MAJOR_VERSION > 3 || GTK_MINOR_VERSION >= 22
-		gtk_menu_popup_at_pointer(GTK_MENU(gtk_builder_get_object(main_builder, "popup_menu_convert")), (GdkEvent*) event);
+		gtk_menu_popup_at_pointer(tUnitSelector_menu, (GdkEvent*) event);
 #else
-		gtk_menu_popup(GTK_MENU(gtk_builder_get_object(main_builder, "popup_menu_convert")), NULL, NULL, NULL, NULL, event->button, event->time);
+		gtk_menu_popup(tUnitSelector_menu, NULL, NULL, NULL, NULL, event->button, event->time);
 #endif
 		return TRUE;
 	}
@@ -366,9 +368,9 @@ gboolean on_convert_treeview_unit_popup_menu(GtkWidget*, gpointer) {
 	popup_convert_unit = NULL;
 	update_convert_popup();
 #if GTK_MAJOR_VERSION > 3 || GTK_MINOR_VERSION >= 22
-	gtk_menu_popup_at_pointer(GTK_MENU(gtk_builder_get_object(main_builder, "popup_menu_convert")), NULL);
+	gtk_menu_popup_at_pointer(tUnitSelector_menu, NULL);
 #else
-	gtk_menu_popup(GTK_MENU(gtk_builder_get_object(main_builder, "popup_menu_convert")), NULL, NULL, NULL, NULL, 0, gtk_get_current_event_time());
+	gtk_menu_popup(tUnitSelector_menu, NULL, NULL, NULL, NULL, 0, gtk_get_current_event_time());
 #endif
 	return TRUE;
 }
@@ -522,5 +524,9 @@ void create_conversion_view() {
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(gtk_builder_get_object(main_builder, "convert_button_continuous_conversion")), continuous_conversion);
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(gtk_builder_get_object(main_builder, "convert_button_set_missing_prefixes")), set_missing_prefixes);
 
-	gtk_builder_add_callback_symbols(main_builder, "on_convert_entry_unit_activate", G_CALLBACK(on_convert_entry_unit_activate), "on_convert_entry_unit_changed", G_CALLBACK(on_convert_entry_unit_changed), "on_convert_entry_unit_icon_release", G_CALLBACK(on_convert_entry_unit_icon_release), "on_convert_treeview_category_row_expanded", G_CALLBACK(on_convert_treeview_category_row_expanded), "on_convert_treeview_unit_button_press_event", G_CALLBACK(on_convert_treeview_unit_button_press_event), "on_convert_treeview_unit_popup_menu", G_CALLBACK(on_convert_treeview_unit_popup_menu), "on_convert_entry_search_changed", G_CALLBACK(on_convert_entry_search_changed), "on_convert_button_convert_clicked", G_CALLBACK(on_convert_button_convert_clicked), "on_convert_button_continuous_conversion_toggled", G_CALLBACK(on_convert_button_continuous_conversion_toggled), "on_convert_button_set_missing_prefixes_toggled", G_CALLBACK(on_convert_button_set_missing_prefixes_toggled), "on_popup_menu_convert_insert_activate", G_CALLBACK(on_popup_menu_convert_insert_activate), "on_popup_menu_convert_convert_activate", G_CALLBACK(on_popup_menu_convert_convert_activate), "on_unit_entry_key_press_event", G_CALLBACK(on_unit_entry_key_press_event), NULL);
+	tUnitSelector_menu = GTK_MENU(gtk_menu_new_from_model(G_MENU_MODEL(gtk_builder_get_object(menu_builder, "popup_menu_convert"))));
+	gtk_menu_attach_to_widget(tUnitSelector_menu, GTK_WIDGET(tUnitSelector), NULL);
+	ACTIONS_ADD(tUnitSelector, "conversionview", {"insert", on_popup_menu_convert_insert_activate}, {"convert", on_popup_menu_convert_convert_activate});
+
+	gtk_builder_add_callback_symbols(main_builder, "on_convert_entry_unit_activate", G_CALLBACK(on_convert_entry_unit_activate), "on_convert_entry_unit_changed", G_CALLBACK(on_convert_entry_unit_changed), "on_convert_entry_unit_icon_release", G_CALLBACK(on_convert_entry_unit_icon_release), "on_convert_treeview_category_row_expanded", G_CALLBACK(on_convert_treeview_category_row_expanded), "on_convert_treeview_unit_button_press_event", G_CALLBACK(on_convert_treeview_unit_button_press_event), "on_convert_treeview_unit_popup_menu", G_CALLBACK(on_convert_treeview_unit_popup_menu), "on_convert_entry_search_changed", G_CALLBACK(on_convert_entry_search_changed), "on_convert_button_convert_clicked", G_CALLBACK(on_convert_button_convert_clicked), "on_convert_button_continuous_conversion_toggled", G_CALLBACK(on_convert_button_continuous_conversion_toggled), "on_convert_button_set_missing_prefixes_toggled", G_CALLBACK(on_convert_button_set_missing_prefixes_toggled), "on_unit_entry_key_press_event", G_CALLBACK(on_unit_entry_key_press_event), NULL);
 }
