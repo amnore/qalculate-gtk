@@ -257,7 +257,7 @@ unsigned int combo_get_bits(GtkComboBox *w, bool has_auto = true);
 #define SUBMENU_ITEM_INSERT(x,y,i)		item = gtk_menu_item_new_with_label(x); gtk_widget_show (item); gtk_menu_shell_insert(GTK_MENU_SHELL(y), item, i); sub = gtk_menu_new(); gtk_widget_show (sub); gtk_menu_item_set_submenu(GTK_MENU_ITEM(item), sub);
 
 #define ACTIONS_ADD(w, prefix, ...)                                                            \
-	{                                                                                          \
+	do {                                                                                       \
 		GActionEntry action_entries[] = {__VA_ARGS__};                                         \
 		GSimpleActionGroup *action_group = g_simple_action_group_new();                        \
 		g_action_map_add_action_entries(                                                       \
@@ -265,14 +265,53 @@ unsigned int combo_get_bits(GtkComboBox *w, bool has_auto = true);
 			sizeof(action_entries) / sizeof(action_entries[0]), NULL);                         \
 		gtk_widget_insert_action_group(GTK_WIDGET(w), (prefix), G_ACTION_GROUP(action_group)); \
 		g_object_unref(action_group);                                                          \
-	}
+	} while(0)
 #define ACTIONS_SET_ENABLED(w, enabled, prefix, ...)                                                                   \
-	{                                                                                                                  \
+	do {                                                                                                               \
 		const char *names[] = {__VA_ARGS__};                                                                           \
 		GActionMap *action_map = G_ACTION_MAP(gtk_widget_get_action_group(GTK_WIDGET(w), (prefix)));                   \
 		for(int i = 0; i < sizeof(names) / sizeof(names[0]); i++) {                                                    \
 			g_simple_action_set_enabled(G_SIMPLE_ACTION(g_action_map_lookup_action(action_map, names[i])), (enabled)); \
 		}                                                                                                              \
-	}
+	} while(0)
+#define ACTIONS_SET_STATE_BOOL(w, state, prefix, ...)                                                              \
+	do {                                                                                                           \
+		const char *names[] = {__VA_ARGS__};                                                                       \
+		GVariant *variant = g_variant_new_boolean((state));                                                        \
+		GActionMap *action_map = G_ACTION_MAP(gtk_widget_get_action_group(GTK_WIDGET(w), (prefix)));               \
+		for(int i = 0; i < sizeof(names) / sizeof(names[0]); i++) {                                                \
+			g_simple_action_set_state(G_SIMPLE_ACTION(g_action_map_lookup_action(action_map, names[i])), variant); \
+		}                                                                                                          \
+	} while(0)
+#define G_MENU_SET_ATTRIBUTES(id, index, ...)                                       \
+	do {                                                                            \
+		GMenu *menu = G_MENU(gtk_builder_get_object(menu_builder, (id)));           \
+		GMenuItem *item = g_menu_item_new_from_model(G_MENU_MODEL(menu), (index));  \
+		struct {                                                                    \
+			const char *name;                                                       \
+			GVariant *variant;                                                      \
+		} attrs[] = {__VA_ARGS__};                                                  \
+		for(int i = 0; i < sizeof(attrs) / sizeof(attrs[0]); i++) {                 \
+			g_menu_item_set_attribute_value(item, attrs[i].name, attrs[i].variant); \
+		}                                                                           \
+		g_menu_remove(menu, (index));                                               \
+		g_menu_insert_item(menu, (index), item);                                    \
+		g_object_unref(item);                                                       \
+	} while(0)
+#define G_MENU_APPEND(m, label, action, target, ...)                                \
+	do {                                                                            \
+		GMenu *menu = G_MENU(m);                                                    \
+		GMenuItem *item = g_menu_item_new((label), NULL);                           \
+		g_menu_item_set_action_and_target_value(item, (action), (target));          \
+		struct {                                                                    \
+			const char *name;                                                       \
+			GVariant *variant;                                                      \
+		} attrs[] = {__VA_ARGS__};                                                  \
+		for(int i = 0; i < sizeof(attrs) / sizeof(attrs[0]); i++) {                 \
+			g_menu_item_set_attribute_value(item, attrs[i].name, attrs[i].variant); \
+		}                                                                           \
+		g_menu_append_item(menu, item);                                             \
+		g_object_unref(item);                                                       \
+	} while(0)
 
 #endif /* QALCULATE_GTK_UTIL_H */

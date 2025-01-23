@@ -13,4 +13,69 @@
       <attribute name="label" translatable="yes">Convert to Unit</attribute>
     </item>
   </menu>
+  <menu id="popup_menu_historyview">
+    <section id="popup_menu_item_history_text_section">
+      <item>
+        <attribute name="action">historyview.insert-value</attribute>
+        <attribute name="label" translatable="yes">Insert Value</attribute>
+      </item>
+      <item>
+        <attribute name="action">historyview.insert-text</attribute>
+        <attribute name="label" translatable="yes">Insert Text</attribute>
+      </item>
+      <item>
+        <attribute name="action">historyview.insert-parsed-text</attribute>
+        <attribute name="label" translatable="yes">Insert Parsed Text</attribute>
+      </item>
+      <item>
+        <attribute name="action">historyview.copy-text</attribute>
+        <attribute name="label" translatable="yes">Copy</attribute>
+      </item>
+      <item>
+        <attribute name="action">historyview.copy-ascii</attribute>
+        <attribute name="label" translatable="yes">Copy Unformatted ASCII</attribute>
+      </item>
+      <item>
+        <attribute name="action">historyview.copy-full-text</attribute>
+        <attribute name="label" translatable="yes">Copy Full Text</attribute>
+      </item>
+    </section>
+    <section id="popup_menu_item_history_search_section">
+      <item>
+        <attribute name="action">historyview.search</attribute>
+        <attribute name="label" translatable="yes">Search…</attribute>
+      </item>
+      <item>
+        <attribute name="action">historyview.search-date</attribute>
+        <attribute name="label" translatable="yes">Search by Date…</attribute>
+      </item>
+    </section>
+    <section id="popup_menu_item_history_bookmark_section">
+      <item>
+        <attribute name="action">historyview.add-bookmark</attribute>
+        <attribute name="label" translatable="yes">Add Bookmark…</attribute>
+      </item>
+      <submenu id="popup_menu_item_history_bookmarks">
+        <attribute name="label" translatable="yes">Bookmarks</attribute>
+      </submenu>
+      <item>
+        <attribute name="action">historyview.protect</attribute>
+        <attribute name="label" translatable="yes">Protect</attribute>
+      </item>
+    </section>
+    <section id="popup_menu_item_history_history_section">
+      <item>
+        <attribute name="action">historyview.move-to-top</attribute>
+        <attribute name="label" translatable="yes">Move To Top</attribute>
+      </item>
+      <item>
+        <attribute name="action">historyview.delete</attribute>
+        <attribute name="label" translatable="yes">Remove</attribute>
+      </item>
+      <item>
+        <attribute name="action">historyview.clear</attribute>
+        <attribute name="label" translatable="yes">Clear All</attribute>
+      </item>
+    </section>
+  </menu>
 </interface>

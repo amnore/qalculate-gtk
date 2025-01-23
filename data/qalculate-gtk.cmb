@@ -1,0 +1,70 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<!DOCTYPE cambalache-project SYSTEM "cambalache-project.dtd">
+<cambalache-project version="0.17.3" target_tk="gtk-4.0">
+  <ui>
+	(6,None,"menus.ui","menus.ui",None,None,None,None,None,None,None)
+  </ui>
+  <ui_library>
+	(6,"gio","2.0",None)
+  </ui_library>
+  <object>
+	(6,1,"(menu)","popup_menu_convert",None,None,None,None,None,None,None),
+	(6,2,"(item)","popup_menu_convert_insert",1,None,None,None,None,None,None),
+	(6,3,"(item)","popup_menu_convert_convert",1,None,None,None,1,None,None),
+	(6,4,"(menu)","popup_menu_historyview",None,None,None,None,None,None,None),
+	(6,5,"(section)","popup_menu_item_history_text_section",4,None,None,None,None,None,None),
+	(6,6,"(item)","popup_menu_item_history_insert_value",5,None,None,None,None,None,None),
+	(6,7,"(item)","popup_menu_item_history_insert_text",5,None,None,None,1,None,None),
+	(6,8,"(item)","popup_menu_item_history_insert_parsed_text",5,None,None,None,2,None,None),
+	(6,9,"(item)","popup_menu_item_history_copy_text",5,None,None,None,3,None,None),
+	(6,10,"(item)","popup_menu_item_history_copy_ascii",5,None,None,None,4,None,None),
+	(6,11,"(item)","popup_menu_item_history_copy_full_text",5,None,None,None,5,None,None),
+	(6,12,"(section)","popup_menu_item_history_search_section",4,None,None,None,1,None,None),
+	(6,13,"(item)","popup_menu_item_history_search",12,None,None,None,None,None,None),
+	(6,14,"(item)","popup_menu_item_history_search_date",12,None,None,None,1,None,None),
+	(6,15,"(section)","popup_menu_item_history_bookmark_section",4,None,None,None,2,None,None),
+	(6,16,"(item)","popup_menu_item_history_bookmark",15,None,None,None,None,None,None),
+	(6,17,"(submenu)","popup_menu_item_history_bookmarks",15,None,None,None,1,None,None),
+	(6,18,"(item)","popup_menu_item_history_protect",15,None,None,None,2,None,None),
+	(6,19,"(section)","popup_menu_item_history_history_section",4,None,None,None,3,None,None),
+	(6,20,"(item)","popup_menu_item_history_movetotop",19,None,None,None,None,None,None),
+	(6,21,"(item)","popup_menu_item_history_delete",19,None,None,None,1,None,None),
+	(6,22,"(item)","popup_menu_item_history_clear",19,None,None,None,2,None,None)
+  </object>
+  <object_property>
+	(6,2,"(item)","action","conversionview.insert",None,None,None,None,None,None,None,None,None),
+	(6,2,"(item)","label","Add to Expression",1,None,None,None,None,None,None,None,None),
+	(6,3,"(item)","action","conversionview.convert",None,None,None,None,None,None,None,None,None),
+	(6,3,"(item)","label","Convert to Unit",1,None,None,None,None,None,None,None,None),
+	(6,6,"(item)","action","historyview.insert-value",None,None,None,None,None,None,None,None,None),
+	(6,6,"(item)","label","Insert Value",1,None,None,None,None,None,None,None,None),
+	(6,7,"(item)","action","historyview.insert-text",None,None,None,None,None,None,None,None,None),
+	(6,7,"(item)","label","Insert Text",1,None,None,None,None,None,None,None,None),
+	(6,8,"(item)","action","historyview.insert-parsed-text",None,None,None,None,None,None,None,None,None),
+	(6,8,"(item)","label","Insert Parsed Text",1,None,None,None,None,None,None,None,None),
+	(6,9,"(item)","action","historyview.copy-text",None,None,None,None,None,None,None,None,None),
+	(6,9,"(item)","label","Copy",1,None,None,None,None,None,None,None,None),
+	(6,10,"(item)","action","historyview.copy-ascii",None,None,None,None,None,None,None,None,None),
+	(6,10,"(item)","label","Copy Unformatted ASCII",1,None,None,None,None,None,None,None,None),
+	(6,11,"(item)","action","historyview.copy-full-text",None,None,None,None,None,None,None,None,None),
+	(6,11,"(item)","label","Copy Full Text",1,None,None,None,None,None,None,None,None),
+	(6,13,"(item)","action","historyview.search",None,None,None,None,None,None,None,None,None),
+	(6,13,"(item)","label","Search…",1,None,None,None,None,None,None,None,None),
+	(6,14,"(item)","action","historyview.search-date",None,None,None,None,None,None,None,None,None),
+	(6,14,"(item)","label","Search by Date…",1,None,None,None,None,None,None,None,None),
+	(6,16,"(item)","action","historyview.add-bookmark",None,None,None,None,None,None,None,None,None),
+	(6,16,"(item)","label","Add Bookmark…",1,None,None,None,None,None,None,None,None),
+	(6,17,"(submenu)","label","Bookmarks",1,None,None,None,None,None,None,None,None),
+	(6,18,"(item)","action","historyview.protect",None,None,None,None,None,None,None,None,None),
+	(6,18,"(item)","label","Protect",1,None,None,None,None,None,None,None,None),
+	(6,20,"(item)","action","historyview.move-to-top",None,None,None,None,None,None,None,None,None),
+	(6,20,"(item)","label","Move To Top",1,None,None,None,None,None,None,None,None),
+	(6,21,"(item)","action","historyview.delete",None,None,None,None,None,None,None,None,None),
+	(6,21,"(item)","label","Remove",1,None,None,None,None,None,None,None,None),
+	(6,22,"(item)","action","historyview.clear",None,None,None,None,None,None,None,None,None),
+	(6,22,"(item)","label","Clear All",1,None,None,None,None,None,None,None,None)
+  </object_property>
+  <object_data>
+	(6,5,"(section)",3,1,None,None,None,None,None,None)
+  </object_data>
+</cambalache-project>
